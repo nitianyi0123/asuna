@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+remote-call:
+  pm25:
+    url: http://www.pm25.in
+    app-key: 5j1znBVAsnSf5xQyNQyq
+
