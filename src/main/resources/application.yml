@@ -1,12 +1,14 @@
-server:
-  port: 8080
-
 spring:
+  application:
+    name: asuna
   datasource:
     url: jdbc:mysql://rm-bp1me825ef7cdy71o125010.mysql.rds.aliyuncs.com/asuna
     username: tj
     password: lujunxian
     type: com.zaxxer.hikari.HikariDataSource
+
+server:
+  port: 8080
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml

@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class AirQualitySchedule {
 
-    private static final String[] cities = new String[]{"shanghai"};
+    private static final String[] CITIES = new String[]{"shanghai"};
 
     private Pm25Manager pm25Manager;
     private AirQualityDataService airQualityDataService;
@@ -33,7 +33,7 @@ public class AirQualitySchedule {
 
     @Scheduled(cron = "0 5 * * * ?", zone = "Asia/Shanghai")
     public void execute() {
-        for (String city : cities) {
+        for (String city : CITIES) {
             List<AirQualityDetail> airQualityDetailList = pm25Manager.queryAqiDetails(city);
             airQualityDataService.save(airQualityDetailList);
         }

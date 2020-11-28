@@ -4,8 +4,6 @@ import com.tj.asuna.dao.model.AirQualityDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author nitianyi
  * @since 2020/11/28
@@ -13,13 +11,36 @@ import java.util.List;
 @Mapper
 @Repository
 public interface AirQualityMapper {
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Long id);
 
+    /**
+     * 插入
+     *
+     * @param record
+     * @return
+     */
     int insert(AirQualityDO record);
 
+    /**
+     * 查询
+     *
+     * @param id
+     * @return
+     */
     AirQualityDO selectByPrimaryKey(Long id);
 
-    List<AirQualityDO> selectAll();
-
+    /**
+     * 更新
+     *
+     * @param record
+     * @return
+     */
     int updateByPrimaryKey(AirQualityDO record);
 }

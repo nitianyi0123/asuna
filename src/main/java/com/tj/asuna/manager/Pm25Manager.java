@@ -22,7 +22,7 @@ import java.util.List;
 public class Pm25Manager {
     private static final Logger logger = LoggerFactory.getLogger(Pm25Manager.class);
 
-    private static final String commonPath = "/api/querys";
+    private static final String COMMON_PATH = "/api/querys";
 
     private final RestTemplate restTemplate;
     private final RemoteCallProperties remoteCallProperties;
@@ -58,7 +58,7 @@ public class Pm25Manager {
      * @return
      */
     public List<AirQualityDetail> queryAqiDetails(String city, Boolean avg, Boolean stations) {
-        String url = remoteCallProperties.getPm25().getUrl() + commonPath + "/aqi_details.json";
+        String url = remoteCallProperties.getPm25().getUrl() + COMMON_PATH + "/aqi_details.json";
         StringBuilder param = new StringBuilder();
         param.append("token=").append(remoteCallProperties.getPm25().getAppKey());
         param.append("&city=").append(city);

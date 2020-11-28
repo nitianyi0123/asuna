@@ -10,9 +10,6 @@ WORKDIR /app/bin
 
 COPY target/asuna.jar ./app.jar
 
-# 日志目录
-VOLUME /app/log
-
 ENTRYPOINT ["java","-jar","/app/bin/app.jar"]
 
 EXPOSE 8080
