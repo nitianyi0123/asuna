@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tj.asuna.dao.mapper.AirQualityMapper">
+    <resultMap id="BaseResultMap" type="com.tj.asuna.dao.model.AirQualityDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="time_point" jdbcType="VARCHAR" property="timePoint"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="station_code" jdbcType="VARCHAR" property="stationCode"/>
+        <result column="primary_pollutant" jdbcType="VARCHAR" property="primaryPollutant"/>
+        <result column="quality" jdbcType="VARCHAR" property="quality"/>
+        <result column="aqi" jdbcType="VARCHAR" property="aqi"/>
+        <result column="so2" jdbcType="VARCHAR" property="so2"/>
+        <result column="so2_24h" jdbcType="VARCHAR" property="so224h"/>
+        <result column="no2" jdbcType="VARCHAR" property="no2"/>
+        <result column="no2_24h" jdbcType="VARCHAR" property="no224h"/>
+        <result column="pm10" jdbcType="VARCHAR" property="pm10"/>
+        <result column="pm10_24h" jdbcType="VARCHAR" property="pm1024h"/>
+        <result column="co" jdbcType="VARCHAR" property="co"/>
+        <result column="co_24h" jdbcType="VARCHAR" property="co24h"/>
+        <result column="o3" jdbcType="VARCHAR" property="o3"/>
+        <result column="o3_24h" jdbcType="VARCHAR" property="o324h"/>
+        <result column="o3_8h" jdbcType="VARCHAR" property="o38h"/>
+        <result column="o3_8h_24h" jdbcType="VARCHAR" property="o38h24h"/>
+        <result column="pm2_5" jdbcType="VARCHAR" property="pm25"/>
+        <result column="pm2_5_24h" jdbcType="VARCHAR" property="pm2524h"/>
+        <result column="ctime" jdbcType="BIGINT" property="ctime"/>
+        <result column="mtime" jdbcType="BIGINT" property="mtime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from air_quality
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.tj.asuna.dao.model.AirQualityDO">
+        insert into air_quality (id, time_point, area,
+                                 position_name, station_code, primary_pollutant,
+                                 quality, aqi, so2,
+                                 so2_24h, no2, no2_24h,
+                                 pm10, pm10_24h, co,
+                                 co_24h, o3, o3_24h, o3_8h,
+                                 o3_8h_24h, pm2_5, pm2_5_24h,
+                                 ctime, mtime, version)
+        values (#{id,jdbcType=BIGINT}, #{timePoint,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR},
+                #{positionName,jdbcType=VARCHAR}, #{stationCode,jdbcType=VARCHAR}, #{primaryPollutant,jdbcType=VARCHAR},
+                #{quality,jdbcType=VARCHAR}, #{aqi,jdbcType=VARCHAR}, #{so2,jdbcType=VARCHAR},
+                #{so224h,jdbcType=VARCHAR}, #{no2,jdbcType=VARCHAR}, #{no224h,jdbcType=VARCHAR},
+                #{pm10,jdbcType=VARCHAR}, #{pm1024h,jdbcType=VARCHAR}, #{co,jdbcType=VARCHAR},
+                #{co24h,jdbcType=VARCHAR}, #{o3,jdbcType=VARCHAR}, #{o324h,jdbcType=VARCHAR}, #{o38h,jdbcType=VARCHAR},
+                #{o38h24h,jdbcType=VARCHAR}, #{pm25,jdbcType=VARCHAR}, #{pm2524h,jdbcType=VARCHAR},
+                #{ctime,jdbcType=BIGINT}, #{mtime,jdbcType=BIGINT}, #{version,jdbcType=INTEGER})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.tj.asuna.dao.model.AirQualityDO">
+        update air_quality
+        set time_point        = #{timePoint,jdbcType=VARCHAR},
+            area              = #{area,jdbcType=VARCHAR},
+            position_name     = #{positionName,jdbcType=VARCHAR},
+            station_code      = #{stationCode,jdbcType=VARCHAR},
+            primary_pollutant = #{primaryPollutant,jdbcType=VARCHAR},
+            quality           = #{quality,jdbcType=VARCHAR},
+            aqi               = #{aqi,jdbcType=VARCHAR},
+            so2               = #{so2,jdbcType=VARCHAR},
+            so2_24h           = #{so224h,jdbcType=VARCHAR},
+            no2               = #{no2,jdbcType=VARCHAR},
+            no2_24h           = #{no224h,jdbcType=VARCHAR},
+            pm10              = #{pm10,jdbcType=VARCHAR},
+            pm10_24h          = #{pm1024h,jdbcType=VARCHAR},
+            co                = #{co,jdbcType=VARCHAR},
+            co_24h            = #{co24h,jdbcType=VARCHAR},
+            o3                = #{o3,jdbcType=VARCHAR},
+            o3_24h            = #{o324h,jdbcType=VARCHAR},
+            o3_8h             = #{o38h,jdbcType=VARCHAR},
+            o3_8h_24h         = #{o38h24h,jdbcType=VARCHAR},
+            pm2_5             = #{pm25,jdbcType=VARCHAR},
+            pm2_5_24h         = #{pm2524h,jdbcType=VARCHAR},
+            ctime             = #{ctime,jdbcType=BIGINT},
+            mtime             = #{mtime,jdbcType=BIGINT},
+            version           = #{version,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id,
+               time_point,
+               area,
+               position_name,
+               station_code,
+               primary_pollutant,
+               quality,
+               aqi,
+               so2,
+               so2_24h,
+               no2,
+               no2_24h,
+               pm10,
+               pm10_24h,
+               co,
+               co_24h,
+               o3,
+               o3_24h,
+               o3_8h,
+               o3_8h_24h,
+               pm2_5,
+               pm2_5_24h,
+               ctime,
+               mtime,
+               version
+        from air_quality
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               time_point,
+               area,
+               position_name,
+               station_code,
+               primary_pollutant,
+               quality,
+               aqi,
+               so2,
+               so2_24h,
+               no2,
+               no2_24h,
+               pm10,
+               pm10_24h,
+               co,
+               co_24h,
+               o3,
+               o3_24h,
+               o3_8h,
+               o3_8h_24h,
+               pm2_5,
+               pm2_5_24h,
+               ctime,
+               mtime,
+               version
+        from air_quality
+    </select>
+</mapper>
