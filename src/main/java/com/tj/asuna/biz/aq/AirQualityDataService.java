@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author nitianyi
@@ -63,8 +64,8 @@ public class AirQualityDataService {
         AirQualityDO record = new AirQualityDO();
         record.setTimePoint(airQualityDetail.getTimePoint());
         record.setArea(airQualityDetail.getArea());
-        record.setPositionName(airQualityDetail.getPositionName());
-        record.setStationCode(airQualityDetail.getStationCode());
+        record.setPositionName(Optional.ofNullable(airQualityDetail.getPositionName()).orElse(""));
+        record.setStationCode(Optional.ofNullable(airQualityDetail.getStationCode()).orElse(""));
         record.setAqi(airQualityDetail.getAqi());
         record.setPrimaryPollutant(airQualityDetail.getPrimaryPollutant());
         record.setQuality(airQualityDetail.getQuality());
