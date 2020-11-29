@@ -1,1 +1,6 @@
-
+spring:
+  datasource:
+    url: jdbc:mysql://rm-bp1me825ef7cdy71ogo.mysql.rds.aliyuncs.com/asuna
+    username: tj
+    password: lujunxian
+    type: com.zaxxer.hikari.HikariDataSource

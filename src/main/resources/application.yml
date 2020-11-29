@@ -2,7 +2,7 @@ spring:
   application:
     name: asuna
   datasource:
-    url: jdbc:mysql://rm-bp1me825ef7cdy71o125010.mysql.rds.aliyuncs.com/asuna
+    url: jdbc:mysql://rm-bp1me825ef7cdy71ogo.mysql.rds.aliyuncs.com/asuna_test
     username: tj
     password: lujunxian
     type: com.zaxxer.hikari.HikariDataSource
