@@ -109,6 +109,9 @@ public class AirQualityDataService {
                     offset += LIMIT;
                 } while (!CollectionUtils.isEmpty(results));
             }
+            if (workbook.getNumberOfSheets() == 0) {
+                workbook.createSheet("sheet1");
+            }
         } catch (Exception e) {
             logger.error("query air quality data from database occur error", e);
         }

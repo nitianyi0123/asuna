@@ -6,16 +6,18 @@ import com.tj.asuna.model.AirQualityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 
 /**
  * @author nitianyi
@@ -40,16 +42,23 @@ public class AirQualityController {
         this.airQualityDataService = airQualityDataService;
     }
 
-    @GetMapping(path = "/aqi_detail/{city}")
-    public List<AirQualityDetail> queryAqiDetails(@PathVariable("city") String city) {
+    @GetMapping(path = "/aqi_detail")
+    public List<AirQualityDetail> queryAqiDetails(@RequestParam("city") String city) {
         return pm25Manager.queryAqiDetails(city);
     }
 
-    @GetMapping(path = "/download/{city}")
-    public String download(@PathVariable("city") String city,
+    @GetMapping(path = "/download")
+    public String download(@RequestParam("city") String city,
                            HttpServletRequest request,
                            HttpServletResponse response) {
+        String fileName = city + "_" + System.currentTimeMillis() / 1000 + ".xlsx";
         response.setContentType("application/octet-stream");
+        try {
+            response.setHeader(CONTENT_DISPOSITION, "attachment;filename=" +
+                    URLEncoder.encode(fileName, StandardCharsets.UTF_8.displayName()));
+        } catch (UnsupportedEncodingException uee) {
+            logger.error("URLEncoder encode occur error, filename: {}", fileName, uee);
+        }
         try (OutputStream os = response.getOutputStream()) {
             airQualityDataService.exportExcel(city, os);
             os.flush();
