@@ -5,15 +5,24 @@ import com.tj.asuna.dao.model.AirQualityDO;
 import com.tj.asuna.model.AirQualityDetail;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author nitianyi
@@ -25,12 +34,23 @@ public class AirQualityDataService {
     private static final Logger logger = LoggerFactory.getLogger(AirQualityDataService.class);
 
     private SqlSessionTemplate sqlSessionTemplate;
+    private AirQualityMapper airQualityMapper;
 
     @Autowired
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
         this.sqlSessionTemplate = sqlSessionTemplate;
     }
 
+    @Autowired
+    public void setAirQualityMapper(AirQualityMapper airQualityMapper) {
+        this.airQualityMapper = airQualityMapper;
+    }
+
+    /**
+     * 持久化数据
+     *
+     * @param data
+     */
     public void save(List<AirQualityDetail> data) {
         if (CollectionUtils.isEmpty(data)) {
             return;
@@ -60,6 +80,45 @@ public class AirQualityDataService {
         }
     }
 
+    private static final long LIMIT = 1000;
+
+    /**
+     * 导出某城市所有检测点的环境质量数据
+     *
+     * @param area 城市
+     */
+    public void exportExcel(String area, OutputStream outputStream) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        try {
+            Set<String> positions = airQualityMapper.selectDistinctPosition(area);
+            for (String position : positions) {
+                if (!StringUtils.hasText(position)) {
+                    continue;
+                }
+                XSSFSheet sheet = workbook.createSheet(position);
+                customExcelHead(sheet);
+                int rowNum = 1;
+                long offset = 0;
+                List<AirQualityDO> results;
+                do {
+                    results = airQualityMapper.selectByAreaAndPosition(area, position, LIMIT, offset);
+                    for (AirQualityDO result : results) {
+                        XSSFRow row = sheet.createRow(rowNum++);
+                        customCellValue(row, result);
+                    }
+                    offset += LIMIT;
+                } while (!CollectionUtils.isEmpty(results));
+            }
+            if (workbook.getNumberOfSheets() == 0) {
+                workbook.createSheet("sheet1");
+            }
+        } catch (Exception e) {
+            logger.error("query air quality data from database occur error", e);
+        }
+        workbook.write(outputStream);
+        workbook.close();
+    }
+
     private AirQualityDO convert(AirQualityDetail airQualityDetail) {
         AirQualityDO record = new AirQualityDO();
         record.setTimePoint(airQualityDetail.getTimePoint());
@@ -84,5 +143,44 @@ public class AirQualityDataService {
         record.setPm25(airQualityDetail.getPm25());
         record.setPm2524h(airQualityDetail.getPm2524h());
         return record;
+    }
+
+    private static final String[] HEAD = new String[]{
+            "城市", "监测点", "时间", "AQI", "空气质量指数类别", "首要污染物",
+            "PM2.5细颗粒物1小时平均", "PM2.5细颗粒物24小时滑动平均", "PM10可吸入颗粒物1小时平均", "PM10可吸入颗粒物24小时滑动平均",
+            "SO2二氧化硫1小时平均", "SO2二氧化硫24小时滑动平均", "NO2二氧化氮1小时平均", "NO2二氧化氮24小时滑动平均",
+            "CO一氧化碳1小时平均", "CO一氧化碳24小时滑动平均", "O3臭氧1小时平均", "O3臭氧日最大1小时平均",
+            "O3臭氧8小时滑动平均", "O3臭氧日最大8小时滑动平均"
+    };
+
+    private void customExcelHead(XSSFSheet sheet) {
+        XSSFRow headRow = sheet.createRow(0);
+        for (int i = 0; i < HEAD.length; i++) {
+            XSSFCell cell = headRow.createCell(i, CellType.STRING);
+            cell.setCellValue(HEAD[i]);
+        }
+    }
+
+    private void customCellValue(XSSFRow row, AirQualityDO data) {
+        row.createCell(0, CellType.STRING).setCellValue(data.getArea());
+        row.createCell(1, CellType.STRING).setCellValue(data.getPositionName());
+        row.createCell(2, CellType.STRING).setCellValue(data.getTimePoint());
+        row.createCell(3, CellType.STRING).setCellValue(data.getAqi());
+        row.createCell(4, CellType.STRING).setCellValue(data.getQuality());
+        row.createCell(5, CellType.STRING).setCellValue(data.getPrimaryPollutant());
+        row.createCell(6, CellType.STRING).setCellValue(data.getPm25());
+        row.createCell(7, CellType.STRING).setCellValue(data.getPm2524h());
+        row.createCell(8, CellType.STRING).setCellValue(data.getPm10());
+        row.createCell(9, CellType.STRING).setCellValue(data.getPm1024h());
+        row.createCell(10, CellType.STRING).setCellValue(data.getSo2());
+        row.createCell(11, CellType.STRING).setCellValue(data.getSo224h());
+        row.createCell(12, CellType.STRING).setCellValue(data.getNo2());
+        row.createCell(13, CellType.STRING).setCellValue(data.getNo224h());
+        row.createCell(14, CellType.STRING).setCellValue(data.getCo());
+        row.createCell(15, CellType.STRING).setCellValue(data.getCo24h());
+        row.createCell(16, CellType.STRING).setCellValue(data.getO3());
+        row.createCell(17, CellType.STRING).setCellValue(data.getO324h());
+        row.createCell(18, CellType.STRING).setCellValue(data.getO38h());
+        row.createCell(19, CellType.STRING).setCellValue(data.getO38h24h());
     }
 }
