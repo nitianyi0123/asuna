@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author nitianyi
  * @since 2020/11/27
  */
-@EnableScheduling
+//@EnableScheduling
 @SpringBootApplication
 public class AsunaApplication {
 

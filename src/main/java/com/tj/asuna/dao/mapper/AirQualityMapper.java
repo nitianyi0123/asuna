@@ -2,7 +2,11 @@ package com.tj.asuna.dao.mapper;
 
 import com.tj.asuna.dao.model.AirQualityDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author nitianyi
@@ -35,6 +39,28 @@ public interface AirQualityMapper {
      * @return
      */
     AirQualityDO selectByPrimaryKey(Long id);
+
+    /**
+     * 查询某城市的所有检测点名称
+     *
+     * @param area
+     * @return
+     */
+    Set<String> selectDistinctPosition(String area);
+
+    /**
+     * 查询
+     *
+     * @param area
+     * @param positionName
+     * @param limit
+     * @param offset
+     * @return
+     */
+    List<AirQualityDO> selectByAreaAndPosition(@Param("area") String area,
+                                               @Param("positionName") String positionName,
+                                               @Param("limit") Long limit,
+                                               @Param("offset") Long offset);
 
     /**
      * 更新

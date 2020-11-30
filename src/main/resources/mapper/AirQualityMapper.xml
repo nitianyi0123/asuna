@@ -51,34 +51,7 @@
                 #{o38h24h,jdbcType=VARCHAR}, #{pm25,jdbcType=VARCHAR}, #{pm2524h,jdbcType=VARCHAR},
                 #{ctime,jdbcType=BIGINT}, #{mtime,jdbcType=BIGINT}, #{version,jdbcType=INTEGER})
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.tj.asuna.dao.model.AirQualityDO">
-        update air_quality
-        set time_point        = #{timePoint,jdbcType=VARCHAR},
-            area              = #{area,jdbcType=VARCHAR},
-            position_name     = #{positionName,jdbcType=VARCHAR},
-            station_code      = #{stationCode,jdbcType=VARCHAR},
-            primary_pollutant = #{primaryPollutant,jdbcType=VARCHAR},
-            quality           = #{quality,jdbcType=VARCHAR},
-            aqi               = #{aqi,jdbcType=VARCHAR},
-            so2               = #{so2,jdbcType=VARCHAR},
-            so2_24h           = #{so224h,jdbcType=VARCHAR},
-            no2               = #{no2,jdbcType=VARCHAR},
-            no2_24h           = #{no224h,jdbcType=VARCHAR},
-            pm10              = #{pm10,jdbcType=VARCHAR},
-            pm10_24h          = #{pm1024h,jdbcType=VARCHAR},
-            co                = #{co,jdbcType=VARCHAR},
-            co_24h            = #{co24h,jdbcType=VARCHAR},
-            o3                = #{o3,jdbcType=VARCHAR},
-            o3_24h            = #{o324h,jdbcType=VARCHAR},
-            o3_8h             = #{o38h,jdbcType=VARCHAR},
-            o3_8h_24h         = #{o38h24h,jdbcType=VARCHAR},
-            pm2_5             = #{pm25,jdbcType=VARCHAR},
-            pm2_5_24h         = #{pm2524h,jdbcType=VARCHAR},
-            ctime             = #{ctime,jdbcType=BIGINT},
-            mtime             = #{mtime,jdbcType=BIGINT},
-            version           = #{version,jdbcType=INTEGER}
-        where id = #{id,jdbcType=BIGINT}
-    </update>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select id,
                time_point,
@@ -108,4 +81,78 @@
         from air_quality
         where id = #{id,jdbcType=BIGINT}
     </select>
+
+    <select id="selectDistinctPosition" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct position_name
+        from air_quality
+        where area = #{area,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByAreaAndPosition" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id,
+        time_point,
+        area,
+        position_name,
+        station_code,
+        primary_pollutant,
+        quality,
+        aqi,
+        so2,
+        so2_24h,
+        no2,
+        no2_24h,
+        pm10,
+        pm10_24h,
+        co,
+        co_24h,
+        o3,
+        o3_24h,
+        o3_8h,
+        o3_8h_24h,
+        pm2_5,
+        pm2_5_24h,
+        ctime,
+        mtime,
+        version
+        from air_quality
+        where area = #{area,jdbcType=VARCHAR}
+        and position_name = #{positionName,jdbcType=VARCHAR}
+        order by ctime desc
+        <if test="limit != null">
+            limit #{limit,jdbcType=BIGINT}
+            <if test="offset != null">
+                offset #{offset,jdbcType=BIGINT}
+            </if>
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.tj.asuna.dao.model.AirQualityDO">
+        update air_quality
+        set time_point        = #{timePoint,jdbcType=VARCHAR},
+            area              = #{area,jdbcType=VARCHAR},
+            position_name     = #{positionName,jdbcType=VARCHAR},
+            station_code      = #{stationCode,jdbcType=VARCHAR},
+            primary_pollutant = #{primaryPollutant,jdbcType=VARCHAR},
+            quality           = #{quality,jdbcType=VARCHAR},
+            aqi               = #{aqi,jdbcType=VARCHAR},
+            so2               = #{so2,jdbcType=VARCHAR},
+            so2_24h           = #{so224h,jdbcType=VARCHAR},
+            no2               = #{no2,jdbcType=VARCHAR},
+            no2_24h           = #{no224h,jdbcType=VARCHAR},
+            pm10              = #{pm10,jdbcType=VARCHAR},
+            pm10_24h          = #{pm1024h,jdbcType=VARCHAR},
+            co                = #{co,jdbcType=VARCHAR},
+            co_24h            = #{co24h,jdbcType=VARCHAR},
+            o3                = #{o3,jdbcType=VARCHAR},
+            o3_24h            = #{o324h,jdbcType=VARCHAR},
+            o3_8h             = #{o38h,jdbcType=VARCHAR},
+            o3_8h_24h         = #{o38h24h,jdbcType=VARCHAR},
+            pm2_5             = #{pm25,jdbcType=VARCHAR},
+            pm2_5_24h         = #{pm2524h,jdbcType=VARCHAR},
+            ctime             = #{ctime,jdbcType=BIGINT},
+            mtime             = #{mtime,jdbcType=BIGINT},
+            version           = #{version,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
 </mapper>
