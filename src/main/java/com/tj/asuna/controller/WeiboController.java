@@ -19,7 +19,7 @@ public class WeiboController {
 
     @PostMapping(path = "/trigger")
     public void trigger() {
-        weiboService.searchUntilNow("外滩打卡");
+//        weiboService.searchUntilNow("外滩打卡");
         weiboService.searchUntilNow("徐汇滨江");
         weiboService.searchUntilNow("杨浦滨江");
     }
