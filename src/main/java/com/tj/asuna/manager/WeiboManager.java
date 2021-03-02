@@ -28,7 +28,7 @@ public class WeiboManager {
 
     private static final Logger log = LoggerFactory.getLogger(WeiboManager.class);
 
-    private static final String subToken = "_2A25NP9w1DeRhGeFL6VUU8ivFzTiIHXVuTUr9rDV8PUNbmtAKLXDckW9NQleH9EBef_vvABiDZB_ASj88obqf00R5";
+    private static final String subToken = "_2A25NOXGkDeRhGeFL6VUU8ivFzTiIHXVuT-RsrDV8PUNbmtANLRjxkW9NQleH9BSwahi7-fhTYx1vv2vcMg0Y9qAe";
 
     @Autowired
     private CloseableHttpClient httpClient;
