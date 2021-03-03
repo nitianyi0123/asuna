@@ -128,9 +128,9 @@ public class WeiboManager {
 
     public String curl(String url, String subToken) {
         Random random = new Random();
-        int randomNum = random.nextInt(2000);
+        int randomNum = random.nextInt(400);
         try {
-            Thread.sleep(randomNum);
+            Thread.sleep(randomNum + 100);
         } catch (InterruptedException ie) {
             log.error("thread sleep occur error", ie);
         }

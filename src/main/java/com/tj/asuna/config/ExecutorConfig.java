@@ -16,7 +16,7 @@ public class ExecutorConfig {
     public ExecutorService executorService() {
         return new ThreadPoolExecutor(2, 8,
                 0L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue<>(10),
+                new ArrayBlockingQueue<>(100),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.CallerRunsPolicy());
     }
