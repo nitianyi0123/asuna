@@ -14,7 +14,7 @@ public class ExecutorConfig {
 
     @Bean
     public ExecutorService executorService() {
-        return new ThreadPoolExecutor(1, 2,
+        return new ThreadPoolExecutor(2, 8,
                 0L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(10),
                 Executors.defaultThreadFactory(),

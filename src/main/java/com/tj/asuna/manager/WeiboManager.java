@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,7 @@ public class WeiboManager {
 
     private static final Logger log = LoggerFactory.getLogger(WeiboManager.class);
 
-    private static final String subToken = "_2A25NOXGkDeRhGeFL6VUU8ivFzTiIHXVuT-RsrDV8PUNbmtANLRjxkW9NQleH9BSwahi7-fhTYx1vv2vcMg0Y9qAe";
+    private static final String subToken = "_2A25NOpJuDeRhGeFL6VUU8ivFzTiIHXVuMYSmrDV8PUNbmtANLWf8kW9NQleH9JuyjKeuD4CavRruFMPU7ffJ77f6";
 
     @Autowired
     private CloseableHttpClient httpClient;
@@ -126,6 +127,13 @@ public class WeiboManager {
     }
 
     public String curl(String url, String subToken) {
+        Random random = new Random();
+        int randomNum = random.nextInt(2000);
+        try {
+            Thread.sleep(randomNum);
+        } catch (InterruptedException ie) {
+            log.error("thread sleep occur error", ie);
+        }
         HttpGet request = new HttpGet(url);
         request.addHeader("Cookie", "SUB=" + subToken + ";");
         try (CloseableHttpResponse resp = httpClient.execute(request)) {
