@@ -20,3 +20,9 @@ remote-call:
     url: http://www.pm25.in
     app-key: 5j1znBVAsnSf5xQyNQyq
 
+megvii:
+  face-plus:
+    host: https://api-cn.faceplusplus.com
+    api-key: ggvJXa3aYHYw1gOEXf-Jz7TlLl_j7b_V
+    api-secret: e-PMwucjdElZCRq9pInFK5BbmCpPBzop
+
